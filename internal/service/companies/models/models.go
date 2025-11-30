@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/m04kA/SMK-SellerService/internal/domain"
+	"github.com/m04kA/SMC-SellerService/internal/domain"
 )
 
 // CreateCompanyRequest запрос на создание компании

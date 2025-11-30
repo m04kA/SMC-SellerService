@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/m04kA/SMK-SellerService/internal/service"
-	"github.com/m04kA/SMK-SellerService/internal/service/services/models"
-	companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
-	serviceRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/service"
-	"github.com/m04kA/SMK-SellerService/internal/integrations/priceservice"
+	"github.com/m04kA/SMC-SellerService/internal/service"
+	"github.com/m04kA/SMC-SellerService/internal/service/services/models"
+	companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
+	serviceRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/service"
+	"github.com/m04kA/SMC-SellerService/internal/integrations/priceservice"
 )
 
 type Service struct {

@@ -9,7 +9,7 @@
 make fixtures-load
 
 # Альтернативный способ (через docker exec)
-docker-compose exec -T postgres psql -U postgres -d smk_sellerservice -f - < migrations/fixtures/001_test_companies.sql
+docker-compose exec -T postgres psql -U postgres -d smc_sellerservice -f - < migrations/fixtures/001_test_companies.sql
 ```
 
 **Преимущества `make fixtures-load`:**
@@ -55,7 +55,7 @@ docker-compose exec -T postgres psql -U postgres -d smk_sellerservice -f - < mig
 
 ```sql
 -- Подключиться к БД
-psql -U postgres -d smk_sellerservice
+psql -U postgres -d smc_sellerservice
 
 -- Проверить компании
 SELECT id, name, manager_ids FROM companies;
@@ -111,7 +111,7 @@ FROM working_hours;
 
 ```bash
 # Удалить все данные
-docker-compose exec -T postgres psql -U postgres -d smk_sellerservice << EOF
+docker-compose exec -T postgres psql -U postgres -d smc_sellerservice << EOF
 TRUNCATE companies CASCADE;
 EOF
 

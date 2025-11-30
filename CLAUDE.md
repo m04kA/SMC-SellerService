@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Обзор проекта
 
-SMK-SellerService - микросервис для управления компаниями (автомойками) и их услугами в платформе онлайн-записи на автомойку. Сервис работает на порту 8081 и предоставляет публичные и защищённые endpoints для CRUD операций.
+SMC-SellerService - микросервис для управления компаниями (автомойками) и их услугами в платформе онлайн-записи на автомойку. Сервис работает на порту 8081 и предоставляет публичные и защищённые endpoints для CRUD операций.
 
 **Статус проекта:** ✅ Протестировано и работает согласно OpenAPI спецификации
 
@@ -18,9 +18,9 @@ SMK-SellerService - микросервис для управления комп�
 - **Authentication**: Simplified (X-User-ID + X-User-Role headers for MVP)
 - **Logging**: Custom logger (console + file, injectable dependency)
 - **Metrics**: Prometheus (HTTP + Database metrics)
-- **Monitoring**: Централизованный мониторинг через SMK-Monitoring
+- **Monitoring**: Централизованный мониторинг через SMC-Monitoring
 - **Containerization**: Docker Compose
-- **Module**: `github.com/m04kA/SMK-SellerService`
+- **Module**: `github.com/m04kA/SMC-SellerService`
 
 ## Development Commands
 
@@ -93,7 +93,7 @@ go run cmd/main.go
 # Сборка бинарного файла
 make build
 # или
-go build -o bin/smk-sellerservice cmd/main.go
+go build -o bin/smc-sellerservice cmd/main.go
 ```
 
 ### Database Management
@@ -104,7 +104,7 @@ docker-compose up -d postgres
 docker-compose up migrate
 
 # Откат миграции
-docker-compose run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smk_sellerservice?sslmode=disable" down
+docker-compose run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smc_sellerservice?sslmode=disable" down
 
 # Загрузка тестовых фикстур (рекомендуется)
 make fixtures-load
@@ -118,7 +118,7 @@ make fixtures-load
 ### Database
 
 - PostgreSQL работает на порту **5436** (не стандартный 5432, чтобы избежать конфликтов)
-- Connection string: `host=localhost port=5436 user=postgres password=postgres dbname=smk_sellerservice sslmode=disable`
+- Connection string: `host=localhost port=5436 user=postgres password=postgres dbname=smc_sellerservice sslmode=disable`
 - Миграции автоматически применяются при `docker-compose up` через контейнер `migrate`
 
 ### Testing
@@ -144,9 +144,9 @@ curl http://localhost:8081/metrics
 ```
 
 **Централизованный мониторинг:**
-- Метрики автоматически собираются сервисом **SMK-Monitoring** (https://github.com/m04kA/SMK-Monitoring)
+- Метрики автоматически собираются сервисом **SMC-Monitoring** (https://github.com/m04kA/SMC-Monitoring)
 - **Prometheus** scrapes метрики каждые 15 секунд с endpoint `host.docker.internal:8081/metrics`
-- **Grafana** визуализирует метрики на дашборде "SMK-SellerService Metrics"
+- **Grafana** визуализирует метрики на дашборде "SMC-SellerService Metrics"
 - **PostgreSQL Exporter** собирает метрики базы данных
 
 **Доступные метрики:**
@@ -184,7 +184,7 @@ METRICS_SERVICE_NAME=sellerservice
 Проект следует принципам **Clean Architecture** с чётким разделением ответственности:
 
 ```
-SMK-SellerService/
+SMC-SellerService/
 ├── cmd/
 │   └── main.go                          # Entry point с routing и DI
 ├── internal/
@@ -236,7 +236,7 @@ SMK-SellerService/
 │   │   └── middleware/
 │   │       └── auth.go                 # UserIDAuth middleware
 │   └── integrations/                    # Клиенты для внешних сервисов
-│       └── priceservice/                # Клиент для SMK-PriceService
+│       └── priceservice/                # Клиент для SMC-PriceService
 │           ├── client.go                # HTTP клиент с GetPrice()
 │           ├── contract.go              # Интерфейс Logger
 │           ├── errors.go                # Sentinel errors
@@ -333,7 +333,7 @@ if err != nil {
 **Импорт в сервисном слое:**
 ```go
 import (
-    companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
+    companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
 )
 
 // Проверка ошибок через errors.Is()
@@ -387,10 +387,10 @@ package create_company
 import (
     "errors"
     "net/http"
-    "github.com/m04kA/SMK-SellerService/internal/api/handlers"
-    "github.com/m04kA/SMK-SellerService/internal/api/middleware"
-    "github.com/m04kA/SMK-SellerService/internal/service/companies"
-    "github.com/m04kA/SMK-SellerService/internal/service/companies/models"
+    "github.com/m04kA/SMC-SellerService/internal/api/handlers"
+    "github.com/m04kA/SMC-SellerService/internal/api/middleware"
+    "github.com/m04kA/SMC-SellerService/internal/service/companies"
+    "github.com/m04kA/SMC-SellerService/internal/service/companies/models"
 )
 
 const (
@@ -494,7 +494,7 @@ defer log.Close()
 
 ```go
 import (
-    "github.com/m04kA/SMK-SellerService/pkg/psqlbuilder"
+    "github.com/m04kA/SMC-SellerService/pkg/psqlbuilder"
     "github.com/Masterminds/squirrel"
 )
 
@@ -755,7 +755,7 @@ CREATE TABLE service_addresses (
 
 **Интеграция с ценами (PriceService):**
 GET endpoints для услуг поддерживают опциональный заголовок `X-User-ID`. Если он передан:
-- SellerService отправляет запрос в SMK-PriceService для получения цен
+- SellerService отправляет запрос в SMC-PriceService для получения цен
 - Ответ обогащается полями: `price`, `currency`, `pricing_type`, `vehicle_class`, `applied_multiplier`
 - Если PriceService недоступен или цены нет - поля остаются `null`, но ответ всё равно успешный
 
@@ -768,7 +768,7 @@ X-User-Role: <superuser|user>
 ```
 
 **⚠️ Важно**: Это временное решение для MVP. В продакшене планируется:
-- Отдельный SMK-AuthService для генерации JWT токенов
+- Отдельный SMC-AuthService для генерации JWT токенов
 - Валидация Telegram InitData
 - Refresh token механизм
 - Полноценная JWT аутентификация
@@ -902,7 +902,7 @@ var (
 **service.go:**
 ```go
 import (
-    companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
+    companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
 )
 
 func (s *Service) GetByID(ctx context.Context, id int64) (*models.CompanyResponse, error) {
@@ -959,14 +959,14 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 Всегда используй полный путь модуля:
 ```go
 import (
-    "github.com/m04kA/SMK-SellerService/internal/domain"
-    "github.com/m04kA/SMK-SellerService/internal/service/companies/models"
-    "github.com/m04kA/SMK-SellerService/pkg/psqlbuilder"
-    "github.com/m04kA/SMK-SellerService/pkg/logger"
+    "github.com/m04kA/SMC-SellerService/internal/domain"
+    "github.com/m04kA/SMC-SellerService/internal/service/companies/models"
+    "github.com/m04kA/SMC-SellerService/pkg/psqlbuilder"
+    "github.com/m04kA/SMC-SellerService/pkg/logger"
 
     // Импорт репозиториев с алиасами
-    companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
-    serviceRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/service"
+    companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
+    serviceRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/service"
 
     "github.com/Masterminds/squirrel"
     "github.com/lib/pq"
@@ -1068,7 +1068,7 @@ host = "localhost"
 port = 5436
 user = "postgres"
 password = "postgres"
-dbname = "smk_sellerservice"
+dbname = "smc_sellerservice"
 sslmode = "disable"
 
 [price_service]
@@ -1081,7 +1081,7 @@ enabled = true
 - `[logs]` - настройки логирования
 - `[server]` - HTTP порт сервиса
 - `[database]` - подключение к PostgreSQL
-- `[price_service]` - интеграция с SMK-PriceService (опционально, если `enabled = false` - цены не запрашиваются)
+- `[price_service]` - интеграция с SMC-PriceService (опционально, если `enabled = false` - цены не запрашиваются)
 
 ### Docker Compose
 
@@ -1092,17 +1092,17 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: smk-sellerservice-db
+    container_name: smc-sellerservice-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: smk_sellerservice
+      POSTGRES_DB: smc_sellerservice
     ports:
       - "5436:5432"
     volumes:
       - ./docker/postgres/data:/var/lib/postgresql/data
     networks:
-      - smk-sellerservice-network
+      - smc-sellerservice-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -1111,23 +1111,23 @@ services:
 
   migrate:
     image: migrate/migrate
-    container_name: smk-sellerservice-migrate
+    container_name: smc-sellerservice-migrate
     depends_on:
       postgres:
         condition: service_healthy
     volumes:
       - ./migrations:/migrations
     networks:
-      - smk-sellerservice-network
+      - smc-sellerservice-network
     command: [
       "-path", "/migrations",
-      "-database", "postgres://postgres:postgres@postgres:5432/smk_sellerservice?sslmode=disable",
+      "-database", "postgres://postgres:postgres@postgres:5432/smc_sellerservice?sslmode=disable",
       "up"
     ]
     restart: on-failure
 
 networks:
-  smk-sellerservice-network:
+  smc-sellerservice-network:
     driver: bridge
 ```
 
@@ -1149,17 +1149,17 @@ networks:
 docker-compose up -d
 
 # Вручную
-docker-compose run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smk_sellerservice?sslmode=disable" up
+docker-compose run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smc_sellerservice?sslmode=disable" up
 
 # Откат
-docker-compose run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smk_sellerservice?sslmode=disable" down
+docker-compose run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smc_sellerservice?sslmode=disable" down
 ```
 
 ## Интеграция с микросервисами
 
-Этот сервис является частью микросервисной архитектуры SMK (Smart Mobile Karwash):
+Этот сервис является частью микросервисной архитектуры SMC (Slot My Car):
 
-### SMK-UserService (порт 8080)
+### SMC-UserService (порт 8080)
 
 **Общие паттерны:**
 - Clean Architecture с тем же разделением слоёв
@@ -1184,10 +1184,10 @@ docker-compose run --rm migrate -path /migrations -database "postgres://postgres
 
 **Взаимодействие:**
 - SellerService получает `userID` и `userRole` через заголовки от клиента
-- В будущем планируется SMK-AuthService для JWT токенов
+- В будущем планируется SMC-AuthService для JWT токенов
 - UserService предоставляет endpoint `GET /internal/users/{tg_user_id}` для получения информации о пользователе
 
-### SMK-PriceService (порт 8082) ✅
+### SMC-PriceService (порт 8082) ✅
 
 **Назначение:**
 - Управление ценами на услуги в зависимости от класса автомобиля пользователя
@@ -1247,13 +1247,13 @@ func (s *Service) GetByID(ctx context.Context, companyID, serviceID int64, userI
 ```
 Telegram Bot
     ↓
-SMK-AuthService (JWT генерация, валидация InitData)
+SMC-AuthService (JWT генерация, валидация InitData)
     ↓
 API Gateway (валидация JWT, маршрутизация)
     ↓
-├── SMK-UserService (пользователи, автомобили)
-├── SMK-SellerService (компании, услуги)
-└── SMK-PriceService (цены)
+├── SMC-UserService (пользователи, автомобили)
+├── SMC-SellerService (компании, услуги)
+└── SMC-PriceService (цены)
 ```
 
 ## Best Practices
@@ -1306,7 +1306,7 @@ API Gateway (валидация JWT, маршрутизация)
 
 8. **Используй алиасы для импортов репозиториев:**
    ```go
-   import companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
+   import companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
    ```
 
 9. **Graceful degradation для внешних сервисов:**
@@ -1468,7 +1468,7 @@ chmod 755 logs/
 
 ## Информация о модуле
 
-- **Имя модуля**: `github.com/m04kA/SMK-SellerService`
+- **Имя модуля**: `github.com/m04kA/SMC-SellerService`
 - **Версия Go**: 1.24.2
 - **Ключевые зависимости**:
   - `github.com/Masterminds/squirrel` v1.5.4 - SQL query builder
@@ -1505,4 +1505,4 @@ chmod 755 logs/
 - **Docker Compose**: `docker-compose.yml` (корневая директория)
 - **Тестовые данные**: `test_data/`
 - **Bruno коллекция**: `/Users/yapanarin/GolandProjects/SMC-Bruno/SMC/SellerService/`
-- **Референсный проект**: SMK-UserService (`/Users/yapanarin/GolandProjects/SMK-UserService`)
+- **Референсный проект**: SMC-UserService (`/Users/yapanarin/GolandProjects/SMC-UserService`)

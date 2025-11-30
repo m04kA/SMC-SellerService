@@ -3,8 +3,8 @@ package services
 import (
 	"context"
 
-	"github.com/m04kA/SMK-SellerService/internal/domain"
-	"github.com/m04kA/SMK-SellerService/internal/integrations/priceservice"
+	"github.com/m04kA/SMC-SellerService/internal/domain"
+	"github.com/m04kA/SMC-SellerService/internal/integrations/priceservice"
 )
 
 // ServiceRepository интерфейс репозитория услуг

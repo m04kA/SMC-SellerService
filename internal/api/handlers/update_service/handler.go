@@ -6,10 +6,10 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers"
-	"github.com/m04kA/SMK-SellerService/internal/api/middleware"
-	"github.com/m04kA/SMK-SellerService/internal/service/services"
-	"github.com/m04kA/SMK-SellerService/internal/service/services/models"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers"
+	"github.com/m04kA/SMC-SellerService/internal/api/middleware"
+	"github.com/m04kA/SMC-SellerService/internal/service/services"
+	"github.com/m04kA/SMC-SellerService/internal/service/services/models"
 )
 
 const (

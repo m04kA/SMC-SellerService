@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers"
-	"github.com/m04kA/SMK-SellerService/internal/service/companies/models"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers"
+	"github.com/m04kA/SMC-SellerService/internal/service/companies/models"
 )
 
 const (

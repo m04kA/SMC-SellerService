@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: smk-sellerservice-db
+    container_name: smc-sellerservice-db
     env_file:
       - .env
     environment:
@@ -15,7 +15,7 @@ services:
     volumes:
       - ./docker/postgres/data:/var/lib/postgresql/data
     networks:
-      - smk-sellerservice-network
+      - smc-sellerservice-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 10s
@@ -24,7 +24,7 @@ services:
 
   migrate:
     image: migrate/migrate
-    container_name: smk-sellerservice-migrate
+    container_name: smc-sellerservice-migrate
     env_file:
       - .env
     depends_on:
@@ -33,7 +33,7 @@ services:
     volumes:
       - ./migrations:/migrations
     networks:
-      - smk-sellerservice-network
+      - smc-sellerservice-network
     command: [
       "-path", "/migrations",
       "-database", "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=${DB_SSLMODE}",
@@ -45,7 +45,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.sellerservice
-    container_name: smk-sellerservice-app
+    container_name: smc-sellerservice-app
     env_file:
       - .env
     environment:
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./logs:/app/logs
     networks:
-      - smk-sellerservice-network
+      - smc-sellerservice-network
     depends_on:
       postgres:
         condition: service_healthy
@@ -72,5 +72,5 @@ services:
     restart: unless-stopped
 
 networks:
-  smk-sellerservice-network:
+  smc-sellerservice-network:
     driver: bridge

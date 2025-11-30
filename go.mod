@@ -1,4 +1,4 @@
-module github.com/m04kA/SMK-SellerService
+module github.com/m04kA/SMC-SellerService
 
 go 1.24.2
 

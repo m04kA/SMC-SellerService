@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/m04kA/SMK-SellerService/internal/domain"
-	"github.com/m04kA/SMK-SellerService/pkg/dbmetrics"
-	"github.com/m04kA/SMK-SellerService/pkg/psqlbuilder"
+	"github.com/m04kA/SMC-SellerService/internal/domain"
+	"github.com/m04kA/SMC-SellerService/pkg/dbmetrics"
+	"github.com/m04kA/SMC-SellerService/pkg/psqlbuilder"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/lib/pq"

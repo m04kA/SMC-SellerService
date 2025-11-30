@@ -1,7 +1,7 @@
 .PHONY: help build run test clean clean-all docker-build docker-up docker-down docker-restart docker-logs docker-clean docker-prune migrate-up migrate-down db-reset fixtures-load
 
 # Variables
-APP_NAME=smk-sellerservice
+APP_NAME=smc-sellerservice
 DOCKER_COMPOSE=docker-compose
 GO=go
 
@@ -95,7 +95,7 @@ docker-clean:
 
 docker-prune:
 	@echo "Removing project Docker images..."
-	@docker images | grep smk-sellerservice | awk '{print $$3}' | xargs -r docker rmi -f || true
+	@docker images | grep smc-sellerservice | awk '{print $$3}' | xargs -r docker rmi -f || true
 	@echo "Docker images removed"
 
 # Database commands
@@ -108,7 +108,7 @@ migrate-up:
 
 migrate-down:
 	@echo "Rolling back database migrations..."
-	@$(DOCKER_COMPOSE) run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smk_sellerservice?sslmode=disable" down
+	@$(DOCKER_COMPOSE) run --rm migrate -path /migrations -database "postgres://postgres:postgres@postgres:5432/smc_sellerservice?sslmode=disable" down
 	@echo "Migrations rolled back"
 
 db-reset:
@@ -125,7 +125,7 @@ fixtures-load:
 	@sleep 2
 	@for file in migrations/fixtures/*.sql; do \
 		echo "Loading $$file..."; \
-		$(DOCKER_COMPOSE) exec -T postgres psql -U postgres -d smk_sellerservice -f - < $$file; \
+		$(DOCKER_COMPOSE) exec -T postgres psql -U postgres -d smc_sellerservice -f - < $$file; \
 	done
 	@echo "Fixtures loaded successfully"
 

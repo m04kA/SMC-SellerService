@@ -14,26 +14,26 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/create_company"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/create_service"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/delete_company"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/delete_service"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/get_company"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/get_service"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/list_companies"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/list_services"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/update_company"
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers/update_service"
-	"github.com/m04kA/SMK-SellerService/internal/api/middleware"
-	"github.com/m04kA/SMK-SellerService/internal/config"
-	companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
-	serviceRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/service"
-	"github.com/m04kA/SMK-SellerService/internal/integrations/priceservice"
-	companiesService "github.com/m04kA/SMK-SellerService/internal/service/companies"
-	servicesService "github.com/m04kA/SMK-SellerService/internal/service/services"
-	"github.com/m04kA/SMK-SellerService/pkg/dbmetrics"
-	"github.com/m04kA/SMK-SellerService/pkg/logger"
-	"github.com/m04kA/SMK-SellerService/pkg/metrics"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/create_company"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/create_service"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/delete_company"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/delete_service"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/get_company"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/get_service"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/list_companies"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/list_services"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/update_company"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers/update_service"
+	"github.com/m04kA/SMC-SellerService/internal/api/middleware"
+	"github.com/m04kA/SMC-SellerService/internal/config"
+	companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
+	serviceRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/service"
+	"github.com/m04kA/SMC-SellerService/internal/integrations/priceservice"
+	companiesService "github.com/m04kA/SMC-SellerService/internal/service/companies"
+	servicesService "github.com/m04kA/SMC-SellerService/internal/service/services"
+	"github.com/m04kA/SMC-SellerService/pkg/dbmetrics"
+	"github.com/m04kA/SMC-SellerService/pkg/logger"
+	"github.com/m04kA/SMC-SellerService/pkg/metrics"
 )
 
 func main() {
@@ -52,7 +52,7 @@ func main() {
 	}
 	defer log.Close()
 
-	log.Info("Starting SMK-SellerService...")
+	log.Info("Starting SMC-SellerService...")
 	log.Info("Configuration loaded from config.toml")
 
 	// Инициализируем метрики (если включены)

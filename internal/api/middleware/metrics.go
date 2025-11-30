@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/m04kA/SMK-SellerService/pkg/metrics"
+	"github.com/m04kA/SMC-SellerService/pkg/metrics"
 )
 
 // MetricsMiddleware собирает метрики для HTTP запросов

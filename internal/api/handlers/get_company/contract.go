@@ -3,7 +3,7 @@ package get_company
 import (
 	"context"
 
-	"github.com/m04kA/SMK-SellerService/internal/service/companies/models"
+	"github.com/m04kA/SMC-SellerService/internal/service/companies/models"
 )
 
 type CompanyService interface {

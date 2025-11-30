@@ -1,13 +1,13 @@
-# План внедрения централизованного мониторинга для SMK
+# План внедрения централизованного мониторинга для SMC
 
 ## Цель
-Создать централизованную систему мониторинга для всех микросервисов SMK (UserService, SellerService, PriceService, AuthService) с разделением метрик по дашбордам.
+Создать централизованную систему мониторинга для всех микросервисов SMC (UserService, SellerService, PriceService, AuthService) с разделением метрик по дашбордам.
 
 ## Архитектура
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              SMK-Monitoring (порт 3000)                  │
+│              SMC-Monitoring (порт 3000)                  │
 │                                                           │
 │  ┌─────────────┐         ┌──────────────┐               │
 │  │ Prometheus  │◄────────┤   Grafana    │               │
@@ -37,7 +37,7 @@
 
 ## Этапы реализации
 
-### Этап 1: Подготовка SMK-SellerService ✅
+### Этап 1: Подготовка SMC-SellerService ✅
 **Что делаем в этом репозитории:**
 
 1. **Создать pkg/metrics/metrics.go**
@@ -65,11 +65,11 @@
    - enabled = true/false
    - path = "/metrics"
 
-### Этап 2: Создание SMK-Monitoring (новый репозиторий)
+### Этап 2: Создание SMC-Monitoring (новый репозиторий)
 **Что создаём:**
 
 ```
-SMK-Monitoring/
+SMC-Monitoring/
 ├── README.md
 ├── docker-compose.yml
 ├── .env.example
@@ -101,10 +101,10 @@ SMK-Monitoring/
 
 ### Этап 3: Настройка Prometheus
 **prometheus.yml будет содержать scrape configs для:**
-- SMK-UserService (localhost:8080/metrics)
-- SMK-SellerService (localhost:8081/metrics)
-- SMK-PriceService (localhost:8082/metrics)
-- SMK-AuthService (localhost:8083/metrics)
+- SMC-UserService (localhost:8080/metrics)
+- SMC-SellerService (localhost:8081/metrics)
+- SMC-PriceService (localhost:8082/metrics)
+- SMC-AuthService (localhost:8083/metrics)
 - postgres-exporter для UserService DB
 - postgres-exporter для SellerService DB
 
@@ -192,7 +192,7 @@ db_connections_max{service="sellerservice"}
 
 ## Текущий статус
 
-### ✅ Этап 1: Подготовка SMK-SellerService (ЗАВЕРШЁН!)
+### ✅ Этап 1: Подготовка SMC-SellerService (ЗАВЕРШЁН!)
 - [x] Создать pkg/metrics/metrics.go
 - [x] Создать middleware для HTTP метрик
 - [x] Добавить wrapper для Database метрик
@@ -271,8 +271,8 @@ curl http://localhost:8081/metrics
 METRICS_ENABLED=false go run cmd/main.go
 ```
 
-### ⏳ Этап 2: Создание SMK-Monitoring (СЛЕДУЮЩИЙ)
-- [ ] Создать новый репозиторий `/Users/yapanarin/GolandProjects/SMK-Monitoring`
+### ⏳ Этап 2: Создание SMC-Monitoring (СЛЕДУЮЩИЙ)
+- [ ] Создать новый репозиторий `/Users/yapanarin/GolandProjects/SMC-Monitoring`
 - [ ] Настроить docker-compose.yml (Prometheus + Grafana + postgres-exporter)
 - [ ] Создать prometheus/prometheus.yml с scrape configs
 - [ ] Настроить Grafana provisioning (datasources + dashboards)
@@ -287,7 +287,7 @@ METRICS_ENABLED=false go run cmd/main.go
 - [ ] Dashboard: AuthService
 
 ### ⏳ Этап 4: Интеграция
-- [ ] Подключить SMK-SellerService к Prometheus
+- [ ] Подключить SMC-SellerService к Prometheus
 - [ ] Подключить остальные сервисы (UserService, PriceService, AuthService)
 - [ ] Настроить алерты (error rate, latency, service down)
 - [ ] Создать README.md с документацией
@@ -304,14 +304,14 @@ METRICS_ENABLED=false go run cmd/main.go
 
 ## Следующие шаги
 
-1. ✅ **Этап 1 ЗАВЕРШЁН** - Метрики добавлены в SMK-SellerService
-2. 🚀 **Этап 2 СЛЕДУЮЩИЙ** - Создание SMK-Monitoring репозитория
+1. ✅ **Этап 1 ЗАВЕРШЁН** - Метрики добавлены в SMC-SellerService
+2. 🚀 **Этап 2 СЛЕДУЮЩИЙ** - Создание SMC-Monitoring репозитория
 3. ⏳ Повторить Этап 1 для остальных сервисов (UserService, PriceService, AuthService)
 4. ⏳ Подключить все сервисы к централизованному мониторингу
 
 ## Вопросы для обсуждения
 
-- [ ] Где будет работать SMK-Monitoring? (localhost, отдельный сервер?)
+- [ ] Где будет работать SMC-Monitoring? (localhost, отдельный сервер?)
 - [ ] Нужны ли алерты в Telegram/Email?
 - [ ] Какой retention period для метрик? (15 дней по умолчанию)
 - [ ] Нужна ли аутентификация для Grafana?
@@ -352,5 +352,5 @@ db_connections_active{service="sellerservice"} 2
 
 ---
 
-**✅ Этап 1: Подготовка SMK-SellerService - ЗАВЕРШЁН!**
-**🚀 Готовы к Этапу 2: Создание SMK-Monitoring**
+**✅ Этап 1: Подготовка SMC-SellerService - ЗАВЕРШЁН!**
+**🚀 Готовы к Этапу 2: Создание SMC-Monitoring**

@@ -1,6 +1,6 @@
 # API Test Commands
 
-Набор curl команд для тестирования SMK-SellerService API согласно OpenAPI спецификации.
+Набор curl команд для тестирования SMC-SellerService API согласно OpenAPI спецификации.
 
 ---
 

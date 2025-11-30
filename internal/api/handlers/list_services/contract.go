@@ -3,7 +3,7 @@ package list_services
 import (
 	"context"
 
-	"github.com/m04kA/SMK-SellerService/internal/service/services/models"
+	"github.com/m04kA/SMC-SellerService/internal/service/services/models"
 )
 
 type ServiceService interface {

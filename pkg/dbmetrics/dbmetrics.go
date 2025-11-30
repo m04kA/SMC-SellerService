@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/m04kA/SMK-SellerService/pkg/metrics"
+	"github.com/m04kA/SMC-SellerService/pkg/metrics"
 )
 
 // DB обёртка над *sql.DB с поддержкой метрик

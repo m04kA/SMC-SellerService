@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/m04kA/SMK-SellerService/internal/service"
-	"github.com/m04kA/SMK-SellerService/internal/service/companies/models"
-	companyRepo "github.com/m04kA/SMK-SellerService/internal/infra/storage/company"
+	"github.com/m04kA/SMC-SellerService/internal/service"
+	"github.com/m04kA/SMC-SellerService/internal/service/companies/models"
+	companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
 )
 
 type Service struct {

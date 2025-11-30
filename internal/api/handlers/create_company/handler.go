@@ -4,10 +4,10 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/m04kA/SMK-SellerService/internal/api/handlers"
-	"github.com/m04kA/SMK-SellerService/internal/api/middleware"
-	"github.com/m04kA/SMK-SellerService/internal/service/companies"
-	"github.com/m04kA/SMK-SellerService/internal/service/companies/models"
+	"github.com/m04kA/SMC-SellerService/internal/api/handlers"
+	"github.com/m04kA/SMC-SellerService/internal/api/middleware"
+	"github.com/m04kA/SMC-SellerService/internal/service/companies"
+	"github.com/m04kA/SMC-SellerService/internal/service/companies/models"
 )
 
 const (

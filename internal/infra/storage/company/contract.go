@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/m04kA/SMK-SellerService/pkg/dbmetrics"
+	"github.com/m04kA/SMC-SellerService/pkg/dbmetrics"
 )
 
 // Переиспользуем интерфейсы из dbmetrics
