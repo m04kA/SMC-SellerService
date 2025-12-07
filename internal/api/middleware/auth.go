@@ -48,3 +48,25 @@ func GetUserRole(ctx context.Context) (string, bool) {
 	userRole, ok := ctx.Value(UserRoleKey).(string)
 	return userRole, ok
 }
+
+// OptionalAuth извлекает опциональные заголовки аутентификации и сохраняет их в контекст
+// В отличие от Auth, не требует обязательного наличия заголовков
+func OptionalAuth(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
+		// Пытаемся получить X-User-ID (опционально)
+		if userIDStr := r.Header.Get("X-User-ID"); userIDStr != "" {
+			if userID, err := strconv.ParseInt(userIDStr, 10, 64); err == nil && userID > 0 {
+				ctx = context.WithValue(ctx, UserIDKey, userID)
+			}
+		}
+
+		// Пытаемся получить X-User-Role (опционально)
+		if userRole := r.Header.Get("X-User-Role"); userRole != "" {
+			ctx = context.WithValue(ctx, UserRoleKey, userRole)
+		}
+
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}

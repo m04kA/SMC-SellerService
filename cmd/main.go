@@ -148,13 +148,17 @@ func main() {
 	// API prefix
 	api := r.PathPrefix("/api/v1").Subrouter()
 
+	// Public routes (с опциональной аутентификацией для получения дополнительных данных)
+	public := api.PathPrefix("").Subrouter()
+	public.Use(middleware.OptionalAuth)
+
 	// Public routes для компаний
-	api.HandleFunc("/companies", listCompaniesHandler.Handle).Methods(http.MethodGet)
-	api.HandleFunc("/companies/{id}", getCompanyHandler.Handle).Methods(http.MethodGet)
+	public.HandleFunc("/companies", listCompaniesHandler.Handle).Methods(http.MethodGet)
+	public.HandleFunc("/companies/{id}", getCompanyHandler.Handle).Methods(http.MethodGet)
 
 	// Public routes для услуг
-	api.HandleFunc("/companies/{company_id}/services", listServicesHandler.Handle).Methods(http.MethodGet)
-	api.HandleFunc("/companies/{company_id}/services/{service_id}", getServiceHandler.Handle).Methods(http.MethodGet)
+	public.HandleFunc("/companies/{company_id}/services", listServicesHandler.Handle).Methods(http.MethodGet)
+	public.HandleFunc("/companies/{company_id}/services/{service_id}", getServiceHandler.Handle).Methods(http.MethodGet)
 
 	// Protected routes (требуют X-User-ID и X-User-Role)
 	protected := api.PathPrefix("").Subrouter()

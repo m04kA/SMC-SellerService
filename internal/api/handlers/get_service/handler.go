@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/m04kA/SMC-SellerService/internal/api/handlers"
+	"github.com/m04kA/SMC-SellerService/internal/api/middleware"
 	"github.com/m04kA/SMC-SellerService/internal/service/services"
 )
 
@@ -48,13 +49,10 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Парсим опциональный заголовок X-User-ID для расчёта цен
+	// Получаем опциональный userID из контекста (через OptionalAuth middleware)
 	var userID *int64
-	if userIDStr := r.Header.Get("X-User-ID"); userIDStr != "" {
-		parsedUserID, err := strconv.ParseInt(userIDStr, 10, 64)
-		if err == nil && parsedUserID > 0 {
-			userID = &parsedUserID
-		}
+	if ctxUserID, ok := middleware.GetUserID(r.Context()); ok && ctxUserID > 0 {
+		userID = &ctxUserID
 	}
 
 	service, err := h.service.GetByID(r.Context(), companyID, serviceID, userID)
