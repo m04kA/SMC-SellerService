@@ -15,6 +15,7 @@ type Config struct {
 	Database     DatabaseConfig     `toml:"database"`
 	Metrics      MetricsConfig      `toml:"metrics"`
 	PriceService PriceServiceConfig `toml:"priceservice"`
+	UserService  UserServiceConfig  `toml:"userservice"`
 }
 
 // LogsConfig содержит настройки логирования
@@ -54,6 +55,11 @@ type MetricsConfig struct {
 
 // PriceServiceConfig содержит настройки интеграции с PriceService
 type PriceServiceConfig struct {
+	BaseURL string `toml:"base_url"`
+}
+
+// UserServiceConfig содержит настройки интеграции с UserService
+type UserServiceConfig struct {
 	BaseURL string `toml:"base_url"`
 }
 
@@ -141,6 +147,11 @@ func overrideFromEnv(cfg *Config) {
 	if v := os.Getenv("PRICESERVICE_BASE_URL"); v != "" {
 		cfg.PriceService.BaseURL = v
 	}
+
+	// UserService
+	if v := os.Getenv("USERSERVICE_BASE_URL"); v != "" {
+		cfg.UserService.BaseURL = v
+	}
 }
 
 // validate проверяет корректность конфигурации
@@ -208,6 +219,11 @@ func validate(cfg *Config) error {
 	// PriceService validation
 	if cfg.PriceService.BaseURL == "" {
 		return fmt.Errorf("priceservice base_url is required")
+	}
+
+	// UserService validation
+	if cfg.UserService.BaseURL == "" {
+		return fmt.Errorf("userservice base_url is required")
 	}
 
 	return nil

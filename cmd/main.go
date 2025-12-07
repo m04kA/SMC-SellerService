@@ -29,6 +29,7 @@ import (
 	companyRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/company"
 	serviceRepo "github.com/m04kA/SMC-SellerService/internal/infra/storage/service"
 	"github.com/m04kA/SMC-SellerService/internal/integrations/priceservice"
+	"github.com/m04kA/SMC-SellerService/internal/integrations/userservice"
 	companiesService "github.com/m04kA/SMC-SellerService/internal/service/companies"
 	servicesService "github.com/m04kA/SMC-SellerService/internal/service/services"
 	"github.com/m04kA/SMC-SellerService/pkg/dbmetrics"
@@ -88,6 +89,10 @@ func main() {
 	priceClient := priceservice.NewClient(cfg.PriceService.BaseURL, log)
 	log.Info("PriceService client initialized (base_url=%s)", cfg.PriceService.BaseURL)
 
+	// Инициализируем UserService клиент
+	userClient := userservice.NewClient(cfg.UserService.BaseURL, log)
+	log.Info("UserService client initialized (base_url=%s)", cfg.UserService.BaseURL)
+
 	// Инициализируем репозитории и сервисы (с метриками или без)
 	var companySvc *companiesService.Service
 	var serviceSvc *servicesService.Service
@@ -100,14 +105,14 @@ func main() {
 		companyRepository := companyRepo.NewRepository(wrappedDB)
 		serviceRepository := serviceRepo.NewRepository(wrappedDB)
 
-		companySvc = companiesService.NewService(companyRepository)
+		companySvc = companiesService.NewService(companyRepository, userClient)
 		serviceSvc = servicesService.NewService(serviceRepository, companyRepository, priceClient)
 	} else {
 		// Инициализируем репозитории без метрик
 		companyRepository := companyRepo.NewRepository(db)
 		serviceRepository := serviceRepo.NewRepository(db)
 
-		companySvc = companiesService.NewService(companyRepository)
+		companySvc = companiesService.NewService(companyRepository, userClient)
 		serviceSvc = servicesService.NewService(serviceRepository, companyRepository, priceClient)
 	}
 

@@ -15,3 +15,8 @@ type CompanyRepository interface {
 	Delete(ctx context.Context, id int64) error
 	IsManager(ctx context.Context, companyID int64, userID int64) (bool, error)
 }
+
+// UserServiceClient интерфейс для работы с UserService
+type UserServiceClient interface {
+	GetSuperUsersWithGracefulDegradation(ctx context.Context) ([]int64, error)
+}

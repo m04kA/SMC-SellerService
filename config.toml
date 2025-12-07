@@ -33,3 +33,7 @@ service_name = "sellerservice" # Имя сервиса для меток в ме
 # Сервис цен PriceService
 [priceservice]
 base_url = "http://localhost:8082"
+
+# Сервис пользователей UserService
+[userservice]
+base_url = "http://localhost:8080"
